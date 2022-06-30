@@ -11,12 +11,10 @@ SRC = $(wildcard src/*.c)
 
 OBJECTS = $(addprefix $(BUILD)/, $(SRC:src/%.c=%.o))
 
-INCLUDES = -I src/
-
 CFLAGS = 
 
 all: mkbuild $(OBJECTS)
-	ar -rcs $(OBJECTS) libstring_c.a
+	ar -rcs libstring_c.a $(OBJECTS)
 
 $(BUILD)/%.o: src/%.c
 	$(CC) -Wall -Wextra -Werror -c $< -o $@
@@ -31,5 +29,12 @@ fclean: clean
 	rm -f libstring_c.a
 
 re: fclean all
+
+log_vars:
+	@echo "\033[0;32m CC:      \033[1;32m$(CC)\033[0m"
+	@echo "\033[0;32m BUILD:   \033[1;32m$(BUILD)\033[0m"
+	@echo "\033[0;32m SRC:     \033[1;32m$(SRC)\033[0m"
+	@echo "\033[0;32m OBJECTS: \033[1;32m$(OBJECTS)\033[0m"
+	@echo "\033[0;32m CFLAGS:  \033[1;32m$(CFLAGS)\033[0m"
 
 .PHONY: all clean fclean re
