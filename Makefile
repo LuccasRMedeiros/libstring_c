@@ -3,8 +3,6 @@
 # To change the default STRING_SIZE call CFLAGS='-DSTRING_SIZE=n' with the make
 # commands, 'n' being the new default size.
 
-NAME = libstring_c.a
-
 CC = gcc 
 
 BUILD = build
@@ -13,23 +11,24 @@ SRC = $(wildcard src/*.c)
 
 OBJECTS = $(addprefix $(BUILD)/, $(SRC:src/%.c=%.o))
 
-INCLUDES = -I include/
+INCLUDES = -I src/
 
 CFLAGS = 
 
-all: mkbuild $(NAME)
+all: mkbuild $(OBJECTS)
+	ar -rcs $(OBJECTS) libstring_c.a
 
-$(NAME): $(OBJECTS)
-	ar -rcs $(OBJECTS)
-
-$(BUILD)%.o: src/%.c
+$(BUILD)/%.o: src/%.c
 	$(CC) -Wall -Wextra -Werror -c $< -o $@
+
+mkbuild:
+	mkdir -p $(BUILD)
 
 clean:
 	rm -rf $(BUILD)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f libstring_c.a
 
 re: fclean all
 
