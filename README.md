@@ -2,7 +2,7 @@
 ## Because strings are beautiful
 
 Did you ever feelted that C lack a decent way to deal with strings?
-You know, there is a header fo it "string.h" that have functions to copy,
+You know, there is a header for it "string.h" that have functions to copy,
 concat and deal with strings of data in general, but there isn't a string type
 that is a collection of chars. Strings are largely used, specially in the front
 end of applications, it is used even in applications that does not have a front
