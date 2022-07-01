@@ -1,30 +1,30 @@
 #include "string_c.h"
 
 /**
- * @brief Remove the whitespaces around the string
+ * @brief Remove the whitespaces around the string. Rewrite str.
  *
- * @param string_t src: Which string_t is to be trimmed
+ * @param string_t str: Which string_t is to be trimmed
  */
-void trim_string_t(string_t src)
+void trim_string_t(string_t str)
 {
     size_t start = 0;
-    size_t end = strlen(src);
+    size_t end = strlen(str);
     string_t holder;
 
-    memset(holder, 0, sizeof (string_t));
+    memset(holder, 0, STRING_SIZE);
 
-    while (isspace(src[start]))
+    while (isspace(str[start]))
         ++start;
 
-    while (isspace(src[end]))
+    while (isspace(str[end]))
         --end;
 
     const size_t limit = end - start;
     for (size_t c = 0; c < limit; ++c)
     {
-        holder[c] = src[start];
+        holder[c] = str[start];
         ++start;
     }
 
-    memcpy(src, holder, sizeof(string_t));
+    strcpy(str, holder);
 }

@@ -56,14 +56,17 @@ typedef char* string_d;
 // } string_s;
 
 // Array strings functions
-void trim_string_t(string_t src);
-int combine_string_ts(string_t dst, unsigned int n_string_ts, ...);
+void trim_string_t(string_t str);
+void slice_string_t(string_t dest, const string_t src, const size_t start, const size_t end);
+int concat_string_ts(string_t dest, const string_t s1, const string_t s2);
+int combine_string_ts(string_t dest, unsigned int n_string_ts, ...);
 
 // Dynamic strings functions
 string_d new_string_d(const string_d content);
 void del_string_d(string_d del);
 void edit_string_d(string_d src, const string_d new_content);
-// void trim_string_d(string_d *src);
+string_d trim_string_d(string_d *src);
+string_d slice_string_d(const string_d src, const size_t start, const size_t end);
 // string_d concat_string_ds(string_d s1, string_d s2);
 // string_d combine_string_ds(unsigned int n_string_ds, ...);
 // string_d* split_string_d(string_d split, char limiter);
