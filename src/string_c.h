@@ -72,9 +72,11 @@ string_d slice_string_d(const string_d src, const size_t start, const size_t end
 // string_d* split_string_d(string_d split, char limiter);
 
 // // Universal strings functions
-// int mc_findin(const string_d src, const string_d restrict lookfor);
-// int ic_findin(const string_d src, const string_d restrict lookfor);
+// int mc_findin(const string_d src, const string_d lookfor);
+// int ic_findin(const string_d src, const string_d lookfor);
 // int regex_findin(const string_d src, const string_d restrict regex);
-// void clean_string(string_d src, const string_d restrict clean_group);
+// int mc_replace(string_d src, const string_d lookfor, const string_d replacefor);
+// int ic_replace(string_d src, const string_d lookfor, const string_d replacefor);
+// int regex_replace(string_d src, const string_d regex, const string_d replacefor);
 
 #endif
