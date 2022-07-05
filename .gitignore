@@ -1,5 +1,6 @@
 build/
 libstring_c.a
+libstring_c.so
 *.swp
 
 # Test file

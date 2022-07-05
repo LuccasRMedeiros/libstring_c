@@ -17,7 +17,7 @@ string_d new_string_d(const string_d restrict content)
     size_t content_len = strlen(content) + 1;
     string_d new = malloc(sizeof (string_d) * content_len);
     memcpy(new, content, content_len);
-    new[content_len] = '\0' // Finishes the string placing a null byte at its end
+    new[content_len] = '\0'; // Finishes the string placing a null byte at its end
 
     return new;
 }

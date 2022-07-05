@@ -65,7 +65,7 @@ int combine_string_ts(string_t dest, unsigned int n_string_ts, ...);
 string_d new_string_d(const string_d content);
 void del_string_d(string_d del);
 void edit_string_d(string_d src, const string_d new_content);
-string_d trim_string_d(string_d *src);
+string_d trim_string_d(string_d str);
 string_d slice_string_d(const string_d src, const size_t start, const size_t end);
 // string_d concat_string_ds(string_d s1, string_d s2);
 // string_d combine_string_ds(unsigned int n_string_ds, ...);

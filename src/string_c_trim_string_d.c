@@ -12,7 +12,7 @@
 string_d trim_string_d(string_d str)
 {
     size_t start;
-    while (ispace(str[start]))
+    while (isspace(str[start]))
         ++start;
 
     size_t end = strlen(str);
@@ -29,7 +29,7 @@ string_d trim_string_d(string_d str)
         result[c] = str[start];
         ++start;
     }
-    result[c] = '\0';
+    result[final_size] = '\0';
 
     del_string_d(str);
 
