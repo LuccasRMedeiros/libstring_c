@@ -11,12 +11,10 @@ void trim_string_t(string_t str)
     size_t end = strlen(str);
     string_t holder;
 
-    memset(holder, 0, STRING_SIZE);
-
     while (isspace(str[start]))
         ++start;
 
-    while (isspace(str[end]))
+    while (isspace(str[end - 1]))
         --end;
 
     const size_t limit = end - start;
@@ -25,6 +23,6 @@ void trim_string_t(string_t str)
         holder[c] = str[start];
         ++start;
     }
-
-    strcpy(str, holder);
+    strncpy(str, holder, limit);
+    str[limit] = '\0';
 }

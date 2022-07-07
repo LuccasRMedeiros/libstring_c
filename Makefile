@@ -3,7 +3,7 @@
 # To change the default STRING_SIZE call CFLAGS='-DSTRING_SIZE=n' with the make
 # commands, 'n' being the new default size.
 
-CC = gcc 
+CC = gcc
 
 BUILD = build
 
@@ -18,11 +18,13 @@ default: mkbuild $(OBJECTS)
 	ar -rcs libstring_c.a $(OBJECTS)
 
 # install rule generate a shared library and places it on system libs directory
-install:
+install: CFLAGS += -fpic
+
+install: mkbuild $(OBJECTS)
 	$(CC) -shared -o libstring_c.so $(OBJECTS)
 
 $(BUILD)/%.o: src/%.c
-	$(CC) -Wall -Wextra -Werror -fpic -c $< -o $@
+	$(CC) -Wall -Wextra -Werror $(CFLAGS) -c $< -o $@
 
 mkbuild:
 	mkdir -p $(BUILD)
@@ -31,9 +33,12 @@ clean:
 	rm -rf $(BUILD)
 
 fclean: clean
+	rm -f libstring_c.a
 	rm -f libstring_c.so
 
-re: fclean all
+redefault: fclean default
+
+reinstall: fclean install
 
 log_vars:
 	@echo "\033[0;32m CC:      \033[1;32m$(CC)\033[0m"
@@ -42,4 +47,4 @@ log_vars:
 	@echo "\033[0;32m OBJECTS: \033[1;32m$(OBJECTS)\033[0m"
 	@echo "\033[0;32m CFLAGS:  \033[1;32m$(CFLAGS)\033[0m"
 
-.PHONY: default install clean fclean re
+.PHONY: default install clean fclean redefault reinstall
