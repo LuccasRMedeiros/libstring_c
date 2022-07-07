@@ -7,7 +7,68 @@ extern "C"
 
 using namespace std;
 
-int assert_that_trim_string_t_works_with_various_whitespace_chars(void)
+int (f)(void) f_test;
+
+class Test
+{
+    private:
+        f_test m_test;
+
+    public:
+        string testName;
+
+        Test(f_test test, string name)
+        {
+            testName = name;
+            m_test = test;
+        }
+
+        int execTest(void){ return m_test(); };
+};
+
+class Testsuit
+{
+    private:
+        int m_total;
+        int m_success;
+        int m_failure;
+        Test* m_tests;
+    
+    public:
+        Testsuit(Test* tests)
+        {
+            m_total = sizeof (tests);
+            m_success = 0;
+            m_failure = 0;
+            m_tests = tests;
+        }
+
+        void execTests(void)
+        {
+            for (int t = 0; t < m_total; ++t)
+            {
+                if (m_tests[t].execTest())
+                {
+                    m_success++;
+                    cout << "\e[0;32m" << m_tests[t].testName << " OK\e[0m\n";
+                }
+                else
+                {
+                    m_failure++;
+                    cout << "\e[0;31m" << m_tests[t].testName << " FAILED\e[0m\n";
+                }
+            }
+
+            cout << "=============================================\n";
+            cout << "\e[0;34mFinished all \e[1;34m" << m_total << " \e[0;34mtests\e[0m\n";
+            if (m_success) // If one or more successes had happened prints how many
+                cout << "\e[1;32m" << m_success << " \e[0;34msuccessfully completed\e[0m\n";
+            if (m_failure) // If one or more failures had happened prints how many
+                cout << "\e[1;31m" << m_failure << " \e[0;34mfailed\e[0m\n";
+        }
+};
+
+int test3(void)
 {
     string_t str = " \t\rtrim this\n\v\f";
 
@@ -17,7 +78,7 @@ int assert_that_trim_string_t_works_with_various_whitespace_chars(void)
     return (!strcmp(str, "trim this"));
 }
 
-int assert_that_trim_string_t_does_not_trim_trimmed_string(void)
+int test2(void)
 {
     string_t str = "does not trim this";
 
@@ -27,31 +88,30 @@ int assert_that_trim_string_t_does_not_trim_trimmed_string(void)
     return (!strcmp(str, "does not trim this"));
 }
 
-int assert_that_trim_string_t_trims_str(void)
+int test1(void)
 {
     string_t str = "         trim this          ";
-
     trim_string_t(str);
     
     // Return if str was correctly trimmed, making strcmp return 0
     return (!strcmp(str, "trim this"));
 }
 
-class Assertion
-{
-    char name[64];
-}
-
 int main(void)
 {
-    int success = 0;
+    Test execTest1(test1, "Test if trim_string_t trims string_t str");
+    Test execTest2(test2, "Test if trim_string_t does not trim trimmed string";
+    Test execTest3(test3, "Test if trim_string_t works with various whitespace chars");
 
-    success += assert_that_trim_string_t_trims_str();
-    success += assert_that_trim_string_t_does_not_trim_trimmed_string();
-    success += assert_that_trim_string_t_works_with_various_whitespace_chars();
+    Test tests[] = {
+        execTest1,
+        execTest2,
+        execTest3
+    };
 
-    cout << "\e[0;34mFinished \e[1;34m3\e[0;34m tests\e[0m\n";
-    cout << "\e[1;32m" << success << "\e[0;34m were successfully executed\e[0m\n";
+    Testsuit testbattery(tests);
 
-    return success;
+    testbattery.execTests();
+
+    return 0;
 }
