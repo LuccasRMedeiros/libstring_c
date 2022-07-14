@@ -6,3 +6,4 @@ libstring_c.so
 # Test files
 main.c
 *a.out
+*exec_tests
