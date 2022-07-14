@@ -7,37 +7,46 @@ extern "C"
 
 using namespace std;
 
-int (f)(void) f_test;
-
 class Test
 {
     private:
-        f_test m_test;
+        int (*m_test)(void);
+        string m_testName;
 
     public:
-        string testName;
 
-        Test(f_test test, string name)
+        Test(int (*test)(void), string testName)
         {
-            testName = name;
+            m_testName = testName;
             m_test = test;
         }
 
-        int execTest(void){ return m_test(); };
+        int execTest(void)
+        {
+            int res = m_test();
+            cout << "\e[0;34m" << m_testName;
+
+            if (res)
+                cout << " \e[1;32mOK\e[0m" << endl;
+            else
+                cout << " \e[1;32mFAIL\e[0m" << endl;
+
+            return res;
+        }
 };
 
 class Testsuit
 {
     private:
-        int m_total;
+        size_t m_total;
         int m_success;
         int m_failure;
         Test* m_tests;
     
     public:
-        Testsuit(Test* tests)
+        Testsuit(Test* tests, size_t total)
         {
-            m_total = sizeof (tests);
+            m_total = total;
             m_success = 0;
             m_failure = 0;
             m_tests = tests;
@@ -45,18 +54,12 @@ class Testsuit
 
         void execTests(void)
         {
-            for (int t = 0; t < m_total; ++t)
+            for (size_t t = 0; t < m_total; ++t)
             {
                 if (m_tests[t].execTest())
-                {
                     m_success++;
-                    cout << "\e[0;32m" << m_tests[t].testName << " OK\e[0m\n";
-                }
                 else
-                {
                     m_failure++;
-                    cout << "\e[0;31m" << m_tests[t].testName << " FAILED\e[0m\n";
-                }
             }
 
             cout << "=============================================\n";
@@ -99,17 +102,17 @@ int test1(void)
 
 int main(void)
 {
-    Test execTest1(test1, "Test if trim_string_t trims string_t str");
-    Test execTest2(test2, "Test if trim_string_t does not trim trimmed string";
-    Test execTest3(test3, "Test if trim_string_t works with various whitespace chars");
+    Test libstringTest1(&test1, "Test if trim_string_t trims string_t str");
+    Test libstringTest2(&test2, "Test if trim_string_t does not trim trimmed string");
+    Test libstringTest3(&test3, "Test if trim_string_t works with various whitespace chars");
 
     Test tests[] = {
-        execTest1,
-        execTest2,
-        execTest3
+        libstringTest1,
+        libstringTest2,
+        libstringTest3
     };
 
-    Testsuit testbattery(tests);
+    Testsuit testbattery(tests, sizeof (tests) / sizeof (Test));
 
     testbattery.execTests();
 
