@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// Classes
 class Test
 {
     private:
@@ -28,5 +29,8 @@ class Testsuit
         Testsuit(Test* tests, size_t total);
         void execTests(void);
 };
+
+// Commom functions
+int assert_strings_are_equal(const string result, const string expected);
 
 #endif

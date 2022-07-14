@@ -57,9 +57,9 @@ typedef char* string_d;
 
 // Array strings functions
 void trim_string_t(string_t str);
-void slice_string_t(string_t dest, const string_t src, const size_t start, const size_t end);
-int concat_string_ts(string_t dest, const string_t s1, const string_t s2);
-int combine_string_ts(string_t dest, unsigned int n_string_ts, ...);
+int rmchars_string_t(string_t str, const string_d group);
+int rmpattern_string_t(string_t str, const string_d pattern);
+int rmregex_string_t(string_t str, const string_d regex);
 
 // Dynamic strings functions
 string_d new_string_d(const string_d content);
