@@ -3,6 +3,6 @@ libstring_c.a
 libstring_c.so
 *.swp
 
-# Test file
+# Test files
 main.c
-a.out
+*a.out
