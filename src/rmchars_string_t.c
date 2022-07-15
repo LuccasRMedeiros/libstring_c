@@ -22,11 +22,10 @@ static void shift_chars(string_t str, size_t c)
  */
 static char char_is_in_group(char ch, const string_d group)
 {
-    while (*group)
+    for (size_t c =0; group[c]; ++c)
     {
-        if (ch == *group)
+        if (ch == group[c])
             return 1;
-        ++(*group);
     }
 
     return 0;

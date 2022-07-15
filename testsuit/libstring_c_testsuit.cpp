@@ -7,10 +7,10 @@ extern "C"
 #include "cpp_basic_testsuit.hpp"
 
 // Test if rmchars_string_t remove all the chars found in group from str
-int test4(void)
+f_testcase test4(void)
 {
     string_t str = "gyasHello World-0181typç!+!";
-    char group[] = "-018agpstyç!+";
+    char group[] = "-018agpstyç+";
 
     rmchars_string_t(str, group);
 
@@ -18,7 +18,7 @@ int test4(void)
 }
 
 // Test if trim_string_t works with various whitespace chars
-int test3(void)
+f_testcase test3(void)
 {
     string_t str = " \t\rtrim this\n\v\f";
 
@@ -28,7 +28,7 @@ int test3(void)
 }
 
 // Test if trim_string_t does not trim trimmed string
-int test2(void)
+f_testcase test2(void)
 {
     string_t str = "does not trim this";
 
@@ -38,7 +38,7 @@ int test2(void)
 }
 
 // Test if trim_string_t trims string_t str
-int test1(void)
+f_testcase test1(void)
 {
     string_t str = "         trim this          ";
     trim_string_t(str);
@@ -48,21 +48,21 @@ int test1(void)
 
 int main(void)
 {
-    Test libstringTest1(&test1, "Test if trim_string_t trims string_t str");
-    Test libstringTest2(&test2, "Test if trim_string_t does not trim trimmed string");
-    Test libstringTest3(&test3, "Test if trim_string_t works with various whitespace chars");
-    Test libstringTest4(&test4, "Test if rmchars_string_t remove all the chars found in group from str");
+    Assertion libstringTest1(&test1, "Test if trim_string_t trims string_t str");
+    Assertion libstringTest2(&test2, "Test if trim_string_t does not trim trimmed string");
+    Assertion libstringTest3(&test3, "Test if trim_string_t works with various whitespace chars");
+    Assertion libstringTest4(&test4, "Test if rmchars_string_t remove all the chars found in group from str");
 
-    Test tests[] = {
+    vector<Assertion> tests = {
         libstringTest1,
         libstringTest2,
         libstringTest3,
         libstringTest4
     };
 
-    Testsuit testbattery(tests, sizeof (tests) / sizeof (Test));
+    AssertionSet testbattery(tests);
 
-    testbattery.execTests();
+    testbattery.doAssertions();
 
     return 0;
 }

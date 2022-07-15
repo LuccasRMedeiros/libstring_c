@@ -1,15 +1,15 @@
 #include "cpp_basic_testsuit.hpp"
 
 /**
- * @brief Test class constructor
+ * @brief Assertion class constructor
  *
- * @param test Pointer to the test routine
+ * @param testcase Pointer to the test routine
  * @param testName The name of the test
  */
-Test::Test(int (*test)(void), string testName)
+Assertion::Assertion(f_testcase (*testcase)(void), string testName)
 {
-    m_testName = testName;
-    m_test = test;
+    _testName = testName;
+    _testcase = testcase;
 }
 
 /**
@@ -18,10 +18,10 @@ Test::Test(int (*test)(void), string testName)
  *
  * @return Return if the expected result was obtained or not
  */
-int Test::execTest(void)
+int Assertion::assert(void)
 {
-    int res = m_test();
-    cout << "\e[0;34m" << m_testName;
+    int res = _testcase();
+    cout << "\e[0;34m" << _testName;
 
     if (res)
         cout << " \e[1;32mOK\e[0m" << endl;
@@ -32,48 +32,56 @@ int Test::execTest(void)
 }
 
 /**
- * @brief Testsuit class constructor
+ * @brief AssertionSet class constructor
  *
- * @param tests Array of tests that will be executed
+ * @param tests Vector of tests that will be executed
  * @param total How many tests there are
  */
-Testsuit::Testsuit(Test* tests, size_t total)
+AssertionSet::AssertionSet(vector<Assertion> tests)
 {
-    m_total = total;
-    m_success = 0;
-    m_failure = 0;
-    m_tests = tests;
+    _success = 0;
+    _failure = 0;
+    _tests = tests;
 }
 
 /**
  * @brief Execute all the tests, in the end yells how many tests passed and how
  * many failed
  */
-void Testsuit::execTests(void)
+void AssertionSet::doAssertions(void)
 {
-    for (size_t t = 0; t < m_total; ++t)
+    for (size_t t = 0; t < _tests.size(); ++t)
     {
-        if (m_tests[t].execTest())
-            m_success++;
+        if (_tests[t].assert())
+            _success++;
         else
-            m_failure++;
+            _failure++;
     }
 
     cout << "=============================================\n";
-    cout << "\e[0;34mFinished all \e[1;34m" << m_total << " \e[0;34mtests\e[0m\n";
-    if (m_success) // If one or more successes had happened prints how many
-        cout << "\e[1;32m" << m_success << " \e[0;34msuccessfully completed\e[0m\n";
-    if (m_failure) // If one or more failures had happened prints how many
-        cout << "\e[1;31m" << m_failure << " \e[0;34mfailed\e[0m\n";
+    cout << "\e[0;34mFinished all \e[1;34m" << _tests.size() << " \e[0;34mtests\e[0m\n";
+    
+    if (_success) // If one or more successes had happened prints how many
+        cout << "\e[1;32m" << _success << " \e[0;34msuccessfully completed\e[0m\n";
+    if (_failure) // If one or more failures had happened prints how many
+        cout << "\e[1;31m" << _failure << " \e[0;34mfailed\e[0m\n";
 }
 
-int assert_strings_are_equal(const string received, const string expected)
+/**
+ * @brief Assert that both strings received and expected are equal. When that
+ * is not the case yield in the terminal what happened
+ *
+ * @param received The result of a routine
+ * @param expected The expected result of a routine
+ * @return True if they are equal or false
+ */
+bool assert_strings_are_equal(const string received, const string expected)
 {
     if (expected != received)
     {
         cout << "\n\e[0mExpected:\e[1;31m " << expected << "\e[0m received:\e[1;31m " << received << "\e[0m\n";
-        return 0;
+        return false;
     }
 
-    return 1;
+    return true;
 }
