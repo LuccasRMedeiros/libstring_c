@@ -22,23 +22,10 @@
 #define STRING_SIZE 64
 #endif
 
-#define SHORT_STRING_SIZE STRING_SIZE / 2
-#define BIG_STRING_SIZE STRING_SIZE * 2
-
 /**
  * @brief Array of STRING_SIZE chars
  */
 typedef char string_t[STRING_SIZE];
-
-/**
- * @brief Array of half STRING_SIZE chars
- */
-typedef char s_string_t[SHORT_STRING_SIZE];
-
-/**
- * @brief Array of double STRING_SIZE chars
- */
-typedef char b_string_t[BIG_STRING_SIZE];
 
 /**
  * @brief Pointer to char
@@ -58,8 +45,8 @@ typedef char* string_d;
 // Array strings functions
 void trim_string_t(string_t str);
 int rmchars_string_t(string_t str, const string_d group);
-int rmpattern_string_t(string_t str, const string_d pattern);
-int rmregex_string_t(string_t str, const string_d regex);
+// int rmpattern_string_t(string_t str, const string_d pattern);
+// int rmregex_string_t(string_t str, const string_d regex);
 
 // Dynamic strings functions
 string_d new_string_d(const string_d content);

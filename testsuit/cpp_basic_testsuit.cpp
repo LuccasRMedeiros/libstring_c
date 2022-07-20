@@ -79,7 +79,18 @@ bool assert_strings_are_equal(const string received, const string expected)
 {
     if (expected != received)
     {
-        cout << "\n\e[0mExpected:\e[1;31m " << expected << "\e[0m received:\e[1;31m " << received << "\e[0m\n";
+        cout << "\n\e[0mExpected string:\e[1;31m " << expected << "\e[0m received string:\e[1;31m " << received << "\e[0m\n";
+        return false;
+    }
+
+    return true;
+}
+
+bool assert_integer_values_are_equal(const int received, const int expected)
+{
+    if (expected != received)
+    {
+        cout << "\n\e[0mExpected value:\e[1;31m " << expected << "\e[0m received value:\e[1;31m " << received << "\e[0m\n";
         return false;
     }
 

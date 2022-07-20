@@ -47,5 +47,6 @@ class AssertionSet
 
 // Commom functions
 bool assert_strings_are_equal(const string result, const string expected);
+bool assert_integer_values_are_equal(const int result, const int expected);
 
 #endif
