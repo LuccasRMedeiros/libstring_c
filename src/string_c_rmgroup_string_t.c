@@ -1,26 +1,11 @@
 #include "string_c.h"
 
 /**
- * @brief Shift all the chars inside string to the left
- *
- * @param str The string_t
- * @param c The start point
- */
-static void shift_chars(string_t str, size_t c)
-{
-    while (str[c])
-    {
-        str[c] = str[c + 1];
-        ++c;
-    }
-}
-
-/**
  * @brief Verify if the character is in the group
  *
  * @return If the char is in group or not.
  */
-static char char_is_in_group(char ch, const string_d group)
+static char char_is_in_group(const char ch, const string_d group)
 {
     for (size_t c =0; group[c]; ++c)
     {
@@ -36,23 +21,23 @@ static char char_is_in_group(char ch, const string_d group)
  *
  * @param str The string_t
  * @param group The group of chars to be removed from the string
- * @return The total amount of chars removed from the string "str"
+ * @return How many chars were removed from the string "str"
  */
-int rmchars_string_t(string_t str, const string_d group)
+int rmgroup_string_t(string_t str, const string_d group)
 {
+    // When there is no string or no group of chars return 0
+    if (!str || !group)
+        return 0;
+
     int res = 0;
     size_t str_size = strlen(str);
 
-    // If there is no string or no group of chars return 0
-    if (!str_size || !group)
-        return res;
-
     size_t c = 0;
-    while (c < str_size)
+    while (c < str_size) // Only iterate when the character is intended to be on str
     {
         if (char_is_in_group(str[c], group))
         {
-            shift_chars(str, c);
+            shift_string_t(str, c);
             --str_size;
             ++res;
         }

@@ -3,19 +3,30 @@
 /**
  * @brief Remove the whitespaces around the string. Rewrite str.
  *
- * @param string_t str: Which string_t is to be trimmed
+ * @param str: A string_t to be trimmed
+ * @return How many whitespace chars where removed
  */
-void trim_string_t(string_t str)
+int trim_string_t(string_t str)
 {
+    if (!str)
+        return 0;
+    
+    int ret = 0;
     size_t start = 0;
     size_t end = strlen(str);
     string_t holder;
 
     while (isspace(str[start]))
+    {
         ++start;
+        ++ret;
+    }
 
     while (isspace(str[end - 1]))
+    {
         --end;
+        ++ret;
+    }
 
     const size_t limit = end - start;
     for (size_t c = 0; c < limit; ++c)
@@ -25,4 +36,6 @@ void trim_string_t(string_t str)
     }
     strncpy(str, holder, limit);
     str[limit] = '\0';
+
+    return ret;
 }

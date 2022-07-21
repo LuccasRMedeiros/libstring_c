@@ -69,28 +69,54 @@ void AssertionSet::doAssertions(void)
 
 /**
  * @brief Assert that both strings received and expected are equal. When that
- * is not the case yield in the terminal what happened
+ * is not the case yell what happened
  *
- * @param received The result of a routine
- * @param expected The expected result of a routine
+ * @param received: The result of a routine
+ * @param expected: The expected result of a routine
  * @return True if they are equal or false
  */
 bool assert_strings_are_equal(const string received, const string expected)
 {
     if (expected != received)
     {
-        cout << "\n\e[0mExpected string:\e[1;31m " << expected << "\e[0m received string:\e[1;31m " << received << "\e[0m\n";
+        cout << "\n\e[0mExpected string:\e[1;31m" << expected << "\e[0m; received string:\e[1;31m" << received << "\e[0m;\n";
         return false;
     }
 
     return true;
 }
 
+/**
+ * @brief Assert that both integer values are equal. When that is not the case
+ * yell what happened
+ *
+ * @param received: The result of a routine
+ * @param expected: The expected result
+ * @return True if they are equal or false
+ */
 bool assert_integer_values_are_equal(const int received, const int expected)
 {
     if (expected != received)
     {
-        cout << "\n\e[0mExpected value:\e[1;31m " << expected << "\e[0m received value:\e[1;31m " << received << "\e[0m\n";
+        cout << "\n\e[0mExpected value:\e[1;31m" << expected << "\e[0m; received value:\e[1;31m" << received << "\e[0m;\n";
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @brief Assert that the value of the received integer is zero, not more nor
+ * less. When that is not the case yell what happened
+ *
+ * @param received: The result of a routine
+ * @return True if received is zero or false
+ */
+bool assert_integer_value_is_zero(const int received)
+{
+    if (received)
+    {
+        cout << "\n\e[0mValue is not zero, received:\e[1;31m" << received << "\e[0m;\n";
         return false;
     }
 

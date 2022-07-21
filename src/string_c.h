@@ -28,7 +28,7 @@
 typedef char string_t[STRING_SIZE];
 
 /**
- * @brief Pointer to char
+ * @brief Pointer to chars
  */
 typedef char* string_d;
 
@@ -40,20 +40,23 @@ typedef char* string_d;
 // {
 //     string_d content;
 //     size_t size;
+//     size_t mem;
 // } string_s;
 
 // Array strings functions
-void trim_string_t(string_t str);
-int rmchars_string_t(string_t str, const string_d group);
-// int rmpattern_string_t(string_t str, const string_d pattern);
+void lshift_string_t(string_t str, const size_t init_pos);
+int trim_string_t(string_t str);
+int rmchar_string_t(string_t str, const char ch);
+int rmgroup_string_t(string_t str, const string_d group);
+int rmsubstr_string_t(string_t str, const string_d sub);
 // int rmregex_string_t(string_t str, const string_d regex);
 
 // Dynamic strings functions
-string_d new_string_d(const string_d content);
-void del_string_d(string_d del);
-void edit_string_d(string_d src, const string_d new_content);
-string_d trim_string_d(string_d str);
-string_d slice_string_d(const string_d src, const size_t start, const size_t end);
+// string_d new_string_d(const string_d content);
+// void del_string_d(string_d del);
+// void edit_string_d(string_d src, const string_d new_content);
+// string_d trim_string_d(string_d str);
+// string_d slice_string_d(const string_d src, const size_t start, const size_t end);
 // string_d concat_string_ds(string_d s1, string_d s2);
 // string_d combine_string_ds(unsigned int n_string_ds, ...);
 // string_d* split_string_d(string_d split, char limiter);
