@@ -21,7 +21,7 @@ int rmchar_string_t(string_t str, const char ch)
     {
         if (str[c] == ch)
         {
-            shift_string_t(str, c);
+            lshift_string_t(str, c);
             --str_size;
             ++res;
         }

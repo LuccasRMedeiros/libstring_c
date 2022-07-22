@@ -43,13 +43,29 @@ typedef char* string_d;
 //     size_t mem;
 // } string_s;
 
+enum tkt_e
+{
+    STRING,
+    GROUP,
+    RANGE,
+};
+
+typedef struct regex_token_s
+{
+    char token;
+    enum tkt_e type;
+    int nrpt;
+    struct regex_ext_s next_token;
+    struct regex_ext_s prev_token;
+} regex_token;
+
 // Array strings functions
 void lshift_string_t(string_t str, const size_t init_pos);
 int trim_string_t(string_t str);
 int rmchar_string_t(string_t str, const char ch);
 int rmgroup_string_t(string_t str, const string_d group);
 int rmsubstr_string_t(string_t str, const string_d sub);
-// int rmregex_string_t(string_t str, const string_d regex);
+int rmregex_string_t(string_t str, const string_d regex);
 
 // Dynamic strings functions
 // string_d new_string_d(const string_d content);

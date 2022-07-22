@@ -33,7 +33,7 @@ int rmsubstr_string_t(string_t str, const string_d sub)
         if (is_substring(str, sub, c))
         {
             for (size_t rmc = 0; rmc < sub_size; ++rmc)
-                shift_string_t(str, c);
+                lshift_string_t(str, c);
 
             ++ret;
         }

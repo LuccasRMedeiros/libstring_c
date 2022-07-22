@@ -6,6 +6,17 @@ extern "C"
 
 #include "cpp_basic_testsuit.hpp"
 
+// Test if rmregex_string_t remove basic pattern found in str
+f_testcase test32(void)
+{
+    string_t str = "Delete this pattern from here";
+    char expr[] = "pattern";
+
+    rmregex_string_t(str, expr);
+
+    return (assert_strings_are_equal(str, "Delete this  from here"));
+}
+
 // Test if rmsubstr_string_t return zero when sub is null
 f_testcase test31(void)
 {
@@ -210,12 +221,12 @@ f_testcase test12(void)
     return (assert_integer_values_are_equal(ret, 8));
 }
 
-// Test if shift_string_t shifts string correctly
+// Test if lshift_string_t shifts string correctly
 f_testcase test11(void)
 {
     string_t str = " Shift it";
 
-    shift_string_t(str, 0);
+    lshift_string_t(str, 0);
 
     return (assert_strings_are_equal(str, "Shift it"));
 }
@@ -336,7 +347,7 @@ int main(void)
     Assertion libstringTest8(&test8, "Test if rmgroup_string_t return 0 when no ocurrences are found");
     Assertion libstringTest9(&test9, "Test if rmgroup_string_t return 0 when str is null");
     Assertion libstringTest10(&test10, "Test if rmgroup_string_t return 0 when group is null");
-    Assertion libstringTest11(&test11, "Test if shift_string_t shifts string correctly");
+    Assertion libstringTest11(&test11, "Test if lshift_string_t shifts string correctly");
     Assertion libstringTest12(&test12, "Test if trim_string_t return the number of whitespaces removed for str");
     Assertion libstringTest13(&test13, "Test if trim_string_t return the number of whitespaces removed for str but with diverse whitespace chars");
     Assertion libstringTest14(&test14, "Test if trim_string_t trims only the end of str");
@@ -357,6 +368,7 @@ int main(void)
     Assertion libstringTest29(&test29, "Test if rmsubstr_string_t return zero when there aren't any occurrencies of sub in str");
     Assertion libstringTest30(&test30, "Test if rmsubstr_string_t return zero when str is null");
     Assertion libstringTest31(&test31, "Test if rmsubstr_string_t return zero when sub is null");
+    Assertion libstringTest32(&test32, "Test if rmregex_string_t remove basic pattern found in str");
 
     vector<Assertion> tests = {
         libstringTest1, libstringTest2, libstringTest3, libstringTest4,
@@ -366,8 +378,8 @@ int main(void)
         libstringTest17, libstringTest18, libstringTest19, libstringTest20,
         libstringTest21, libstringTest22, libstringTest23, libstringTest24,
         libstringTest25, libstringTest26, libstringTest27, libstringTest28,
-        libstringTest29, libstringTest30,
-        libstringTest31,
+        libstringTest29, libstringTest30, libstringTest31,
+        libstringTest32,
     };
 
     AssertionSet testbattery(tests);

@@ -37,7 +37,7 @@ int rmgroup_string_t(string_t str, const string_d group)
     {
         if (char_is_in_group(str[c], group))
         {
-            shift_string_t(str, c);
+            lshift_string_t(str, c);
             --str_size;
             ++res;
         }
