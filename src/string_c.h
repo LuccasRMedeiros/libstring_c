@@ -46,18 +46,20 @@ typedef char* string_d;
 enum tkt_e
 {
     STRING,
+    WILDCARD,
     GROUP,
-    RANGE,
+    POS,
+    CONDITION,
 };
 
 typedef struct regex_token_s
 {
-    char token;
+    const string_d token;
     enum tkt_e type;
-    int nrpt;
-    struct regex_ext_s next_token;
-    struct regex_ext_s prev_token;
-} regex_token;
+    unsigned int n_rpt;
+    struct regex_token_s* next_token;
+    struct regex_token_s* prev_token;
+} regex_tokens;
 
 // Array strings functions
 void lshift_string_t(string_t str, const size_t init_pos);
@@ -65,7 +67,7 @@ int trim_string_t(string_t str);
 int rmchar_string_t(string_t str, const char ch);
 int rmgroup_string_t(string_t str, const string_d group);
 int rmsubstr_string_t(string_t str, const string_d sub);
-int rmregex_string_t(string_t str, const string_d regex);
+// int rmregex_string_t(string_t str, const string_d regex);
 
 // Dynamic strings functions
 // string_d new_string_d(const string_d content);
@@ -77,10 +79,10 @@ int rmregex_string_t(string_t str, const string_d regex);
 // string_d combine_string_ds(unsigned int n_string_ds, ...);
 // string_d* split_string_d(string_d split, char limiter);
 
-// // Universal strings functions
+// Universal strings functions
+int* regex_findin(const string_d src, const string_d restrict regex);
 // int mc_findin(const string_d src, const string_d lookfor);
 // int ic_findin(const string_d src, const string_d lookfor);
-// int regex_findin(const string_d src, const string_d restrict regex);
 // int mc_replace(string_d src, const string_d lookfor, const string_d replacefor);
 // int ic_replace(string_d src, const string_d lookfor, const string_d replacefor);
 // int regex_replace(string_d src, const string_d regex, const string_d replacefor);
