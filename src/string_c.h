@@ -22,6 +22,13 @@
 #define STRING_SIZE 64
 #endif
 
+#ifndef STDBOOL_H
+#define false 0
+#define true 1
+
+typedef unsigned char bool;
+#endif
+
 /**
  * @brief Array of STRING_SIZE chars
  */
@@ -43,19 +50,10 @@ typedef char* string_d;
 //     size_t mem;
 // } string_s;
 
-enum tkt_e
-{
-    STRING,
-    WILDCARD,
-    GROUP,
-    POS,
-    CONDITION,
-};
-
 typedef struct regex_token_s
 {
-    const string_d token;
-    enum tkt_e type;
+    unsigned char token;
+    char tk_type;
     unsigned int n_rpt;
     struct regex_token_s* next_token;
     struct regex_token_s* prev_token;
@@ -80,7 +78,7 @@ int rmsubstr_string_t(string_t str, const string_d sub);
 // string_d* split_string_d(string_d split, char limiter);
 
 // Universal strings functions
-int* regex_findin(const string_d src, const string_d restrict regex);
+int* regex_findin(const string_d src, const string_d regex);
 // int mc_findin(const string_d src, const string_d lookfor);
 // int ic_findin(const string_d src, const string_d lookfor);
 // int mc_replace(string_d src, const string_d lookfor, const string_d replacefor);

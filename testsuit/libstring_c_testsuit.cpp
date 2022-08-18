@@ -6,15 +6,16 @@ extern "C"
 
 #include "cpp_basic_testsuit.hpp"
 
-// Test if rmregex_string_t remove basic pattern found in str
+// Test regex token generations
 f_testcase test32(void)
 {
     string_t str = "Delete this pattern from here";
     char expr[] = "pattern";
+    int* ret_test;
 
-    rmregex_string_t(str, expr);
+    ret_test = regex_findin(str, expr); (void)ret_test;
 
-    return (assert_strings_are_equal(str, "Delete this  from here"));
+    return (true);
 }
 
 // Test if rmsubstr_string_t return zero when sub is null
@@ -368,7 +369,7 @@ int main(void)
     Assertion libstringTest29(&test29, "Test if rmsubstr_string_t return zero when there aren't any occurrencies of sub in str");
     Assertion libstringTest30(&test30, "Test if rmsubstr_string_t return zero when str is null");
     Assertion libstringTest31(&test31, "Test if rmsubstr_string_t return zero when sub is null");
-    Assertion libstringTest32(&test32, "Test if rmregex_string_t remove basic pattern found in str");
+    Assertion libstringTest32(&test32, "Test");
 
     vector<Assertion> tests = {
         libstringTest1, libstringTest2, libstringTest3, libstringTest4,
