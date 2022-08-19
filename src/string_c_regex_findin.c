@@ -23,7 +23,9 @@ static regex_tokens* tokenize(const string_d regex)
     {
         next = calloc(1, sizeof (*next));
         
-        if (regex[c] == '^' && is_literal == false)
+        if (regex[c] == '\\')
+            is_literal = true;
+        else if (regex[c] == '^' && c == 0)
         {
             head->token = regex[c];
             head->tk_type = POS_BEGIN;
