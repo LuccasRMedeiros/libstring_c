@@ -20,14 +20,14 @@
 // If STRING_SIZE is not defined before compiling, it defaults to 64
 #ifndef STRING_SIZE
 #define STRING_SIZE 64
-#endif
+#endif //STRING_SIZE
 
 #ifndef STDBOOL_H
 #define false 0
 #define true 1
 
 typedef unsigned char bool;
-#endif
+#endif //STDBOOL_H
 
 /**
  * @brief Array of STRING_SIZE chars

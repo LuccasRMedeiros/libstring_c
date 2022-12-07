@@ -5,8 +5,7 @@ enum tk_type_e
     STRING,
     WILDCARD,
     GROUP,
-    RANGE_FIRST,
-    RANGE_LAST,
+    RANGE,
     POS_BEGIN,
     POS_FINAL,
     IGNORE,
@@ -17,24 +16,12 @@ static regex_tokens* tokenize(const string_d regex)
 {
     regex_tokens* head = calloc(1, sizeof (*head));
     regex_tokens* next = NULL;
-    bool is_literal = false;
-
+    enum tk_type_e token_type;
     for (size_t c = 0; regex[c] != '\0'; ++c)
     {
         next = calloc(1, sizeof (*next));
-        
-        if (regex[c] == '\\')
-            is_literal = true;
-        else if (regex[c] == '^' && c == 0)
-        {
-            head->token = regex[c];
-            head->tk_type = POS_BEGIN;
-        }
-        else if (regex[c] == '$' && is_literal == false)
-        {
-            head->token = regex[c];
-            head->tk_type = POS_FINAL;
-        }
+ 
+        if (
         head->n_rpt = 0;
         next->prev_token = head;
         head->next_token = next;
