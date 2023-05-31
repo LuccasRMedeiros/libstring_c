@@ -6,16 +6,69 @@ extern "C"
 
 #include "cpp_basic_testsuit.hpp"
 
-// Test regex token generations
+// Test if regex_findin does not count when substring is not completely equal to expr
+f_testcase test34(void)
+{
+    string_t str = "Here are only one match bar, the second is just ba";
+    char expr[] = "bar";
+    bool ret = false;
+    search_restable_t *test = NULL;
+
+    test = regex_findin(str, expr);
+
+    ret = assert_values_are_equal(test->n_finds, 1);
+
+    del_search_restable(test);
+
+    return ret;
+}
+
+// Test if regex_findin find all the matching substrings in text
+f_testcase test33(void)
+{
+    string_t str = "Find foo in this text 'fooll' of foo's: foo :)";
+    char expr[] = "foo";
+    bool ret = false;
+    search_restable_t *test = NULL;
+
+    test = regex_findin(str, expr);
+
+    ret = (
+            assert_values_are_equal(test->n_finds, 4) &&
+            assert_values_are_equal(test->positions[0], 5) &&
+            assert_values_are_equal(test->positions[1], 23) &&
+            assert_values_are_equal(test->positions[2], 33) &&
+            assert_values_are_equal(test->positions[3], 40) &&
+            assert_values_are_equal(test->lengths[0], 3) &&
+            assert_values_are_equal(test->lengths[1], 3) &&
+            assert_values_are_equal(test->lengths[2], 3) &&
+            assert_values_are_equal(test->lengths[3], 3)
+          );
+
+    del_search_restable(test);
+
+    return ret;
+}
+
+// Test if regex_findin find the matching substring
 f_testcase test32(void)
 {
-    string_t str = "Delete this pattern from here";
-    char expr[] = "pattern";
-    int* ret_test;
+    string_t str = "Searching for text inside this string";
+    char expr[] = "text";
+    bool ret = false;
+    search_restable_t *test = NULL;
 
-    ret_test = regex_findin(str, expr); (void)ret_test;
+    test = regex_findin(str, expr);
 
-    return (true);
+    ret = (
+            assert_values_are_equal(test->n_finds, 1) &&
+            assert_values_are_equal(test->positions[0], 14) &&
+            assert_values_are_equal(test->lengths[0], 4)
+           );
+
+    del_search_restable(test);
+
+    return ret;
 }
 
 // Test if rmsubstr_string_t return zero when sub is null
@@ -25,7 +78,7 @@ f_testcase test31(void)
 
     int ret = rmsubstr_string_t(str, NULL);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmsubstr_string_t return zero when str is null
@@ -35,7 +88,7 @@ f_testcase test30(void)
 
     int ret = rmsubstr_string_t(NULL, sub);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmsubstr_string_t return zero when there aren't any occurrencies of sub in str
@@ -46,7 +99,7 @@ f_testcase test29(void)
 
     int ret = rmsubstr_string_t(str, sub);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmsubstr_string_t return how many occurrences of sub were removed
@@ -57,7 +110,7 @@ f_testcase test28(void)
 
     int ret = rmsubstr_string_t(str, sub);
 
-    return (assert_integer_values_are_equal(ret, 4));
+    return (assert_values_are_equal(ret, 4));
 }
 
 // Test if rmsubstr_string_t have all occurrences of sub
@@ -111,7 +164,7 @@ f_testcase test23(void)
 
     int ret = rmchar_string_t(str, 0);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmchar_string_t return zero when str is null
@@ -119,7 +172,7 @@ f_testcase test22(void)
 {
     int ret = rmchar_string_t(NULL, 'a');
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmchar_string_t return zero when no occurrences of character can be found in str
@@ -129,7 +182,7 @@ f_testcase test21(void)
 
     int ret = rmchar_string_t(str, 'a');
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmchar_string_t return how many characters were removed
@@ -139,7 +192,7 @@ f_testcase test20(void)
 
     int ret = rmchar_string_t(str, '*');
 
-    return (assert_integer_values_are_equal(ret, 5));
+    return (assert_values_are_equal(ret, 5));
 }
 
 // Test if rmchar_string_t does not remove characters when there isn't characters to be removed
@@ -169,7 +222,7 @@ f_testcase test17(void)
 
     int ret = trim_string_t(str);
 
-    return (assert_integer_values_are_equal(ret, 4));
+    return (assert_values_are_equal(ret, 4));
 }
 
 // Test if trim_string_t return how many characters were removed when it trims only the end of string
@@ -179,7 +232,7 @@ f_testcase test16(void)
 
     int ret = trim_string_t(str);
 
-    return (assert_integer_values_are_equal(ret, 4));
+    return (assert_values_are_equal(ret, 4));
 }
 
 // Test if trim_string_t trims only the begining of str
@@ -209,7 +262,7 @@ f_testcase test13(void)
 
     int ret = trim_string_t(str);
 
-    return (assert_integer_values_are_equal(ret, 6));
+    return (assert_values_are_equal(ret, 6));
 }
 
 // Test if trim_string_t return the number of whitespaces removed for str
@@ -219,7 +272,7 @@ f_testcase test12(void)
 
     int ret = trim_string_t(str);
 
-    return (assert_integer_values_are_equal(ret, 8));
+    return (assert_values_are_equal(ret, 8));
 }
 
 // Test if lshift_string_t shifts string correctly
@@ -239,7 +292,7 @@ f_testcase test10(void)
 
     int ret = rmgroup_string_t(str, NULL);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmgroup_string_t return 0 when str is null
@@ -249,7 +302,7 @@ f_testcase test9(void)
 
     int ret = rmgroup_string_t(NULL, group);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmgroup_string_t return 0 when no ocurrences are found
@@ -260,7 +313,7 @@ f_testcase test8(void)
 
     int ret = rmgroup_string_t(str, group);
 
-    return (assert_integer_value_is_zero(ret));
+    return (assert_value_is_zero(ret));
 }
 
 // Test if rmgroup_string_t returns the correct number of removed chars
@@ -271,7 +324,7 @@ f_testcase test7(void)
 
     int ret = rmgroup_string_t(str, group);
 
-    return (assert_integer_values_are_equal(ret, 4));
+    return (assert_values_are_equal(ret, 4));
 }
 
 // Test if rmgroup_string_t correctly removes chars from str even when such chars are repeated in group
@@ -369,7 +422,9 @@ int main(void)
     Assertion libstringTest29(&test29, "Test if rmsubstr_string_t return zero when there aren't any occurrencies of sub in str");
     Assertion libstringTest30(&test30, "Test if rmsubstr_string_t return zero when str is null");
     Assertion libstringTest31(&test31, "Test if rmsubstr_string_t return zero when sub is null");
-    Assertion libstringTest32(&test32, "Test");
+    Assertion libstringTest32(&test32, "Test if regex_findin find the matching substring");
+    Assertion libstringTest33(&test33, "Test if regex_findin find all the matching substrings in text");
+    Assertion libstringTest34(&test34, "Test if regex_findin does not count when substring is not completely equal to expr");
 
     vector<Assertion> tests = {
         libstringTest1, libstringTest2, libstringTest3, libstringTest4,
@@ -379,8 +434,8 @@ int main(void)
         libstringTest17, libstringTest18, libstringTest19, libstringTest20,
         libstringTest21, libstringTest22, libstringTest23, libstringTest24,
         libstringTest25, libstringTest26, libstringTest27, libstringTest28,
-        libstringTest29, libstringTest30, libstringTest31,
-        libstringTest32,
+        libstringTest29, libstringTest30, libstringTest31, libstringTest32,
+        libstringTest33, libstringTest34
     };
 
     AssertionSet testbattery(tests);

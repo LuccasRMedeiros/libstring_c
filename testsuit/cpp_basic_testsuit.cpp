@@ -94,7 +94,7 @@ bool assert_strings_are_equal(const string received, const string expected)
  * @param expected: The expected result
  * @return True if they are equal or false
  */
-bool assert_integer_values_are_equal(const int received, const int expected)
+bool assert_values_are_equal(const unsigned int received, const unsigned int expected)
 {
     if (expected != received)
     {
@@ -112,7 +112,7 @@ bool assert_integer_values_are_equal(const int received, const int expected)
  * @param received: The result of a routine
  * @return True if received is zero or false
  */
-bool assert_integer_value_is_zero(const int received)
+bool assert_value_is_zero(const unsigned int received)
 {
     if (received)
     {

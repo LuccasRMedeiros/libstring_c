@@ -40,6 +40,13 @@ redefault: fclean default
 
 reinstall: fclean install
 
+autotest: CFLAGS := -g
+
+autotest: redefault
+	rm -f testsuit/exec_tests
+	g++ -Wall -Wextra -Werror -g testsuit/cpp_basic_testsuit.cpp testsuit/libstring_c_testsuit.cpp -I ./src -L./ -lstring_c -o testsuit/exec_tests
+	testsuit/exec_tests
+
 log_vars:
 	@echo "\033[0;32m CC:      \033[1;32m$(CC)\033[0m"
 	@echo "\033[0;32m BUILD:   \033[1;32m$(BUILD)\033[0m"

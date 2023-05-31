@@ -18,28 +18,24 @@
 #include <ctype.h>
 
 // If STRING_SIZE is not defined before compiling, it defaults to 64
-#ifndef STRING_SIZE
-#define STRING_SIZE 64
-#endif //STRING_SIZE
-
-#ifndef STDBOOL_H
-#define false 0
-#define true 1
-
-typedef unsigned char bool;
-#endif //STDBOOL_H
+#ifndef BASE_STRING_SIZE
+#define BASE_STRING_SIZE    64
+#endif // BASE_STRING_SIZE
 
 /**
  * @brief Array of STRING_SIZE chars
  */
-typedef char string_t[STRING_SIZE];
+typedef char            string_t[BASE_STRING_SIZE];
+typedef unsigned char   ustring_t[BASE_STRING_SIZE];
 
 /**
  * @brief Pointer to chars
  */
-typedef char* string_d;
+typedef char*           string_d;
+typedef unsigned char*  ustring_d;
 
-// TODO
+
+// TODO: avail need 
 // /**
 //  * @brief Struct with a string_d and its current size
 //  */
@@ -50,14 +46,12 @@ typedef char* string_d;
 //     size_t mem;
 // } string_s;
 
-typedef struct regex_token_s
+typedef struct    
 {
-    unsigned char token;
-    char tk_type;
-    unsigned int n_rpt;
-    struct regex_token_s* next_token;
-    struct regex_token_s* prev_token;
-} regex_tokens;
+    size_t n_finds;
+    size_t *positions;
+    size_t *lengths;
+} search_restable_t;
 
 // Array strings functions
 void lshift_string_t(string_t str, const size_t init_pos);
@@ -78,11 +72,12 @@ int rmsubstr_string_t(string_t str, const string_d sub);
 // string_d* split_string_d(string_d split, char limiter);
 
 // Universal strings functions
-int* regex_findin(const string_d src, const string_d regex);
+search_restable_t *regex_findin(const string_d src, const string_d regex);
+// int regex_replace(string_d src, const string_d regex, const string_d replacefor);
 // int mc_findin(const string_d src, const string_d lookfor);
 // int ic_findin(const string_d src, const string_d lookfor);
 // int mc_replace(string_d src, const string_d lookfor, const string_d replacefor);
 // int ic_replace(string_d src, const string_d lookfor, const string_d replacefor);
-// int regex_replace(string_d src, const string_d regex, const string_d replacefor);
+void del_search_restable(search_restable_t *del);
 
 #endif
