@@ -6,6 +6,52 @@ extern "C"
 
 #include "cpp_basic_testsuit.hpp"
 
+// Test if wildcard will only match any character in its position
+f_testcase test36(void)
+{
+    string_t str = "Let's find fao and foo here, but not foe";
+    char expr[] = "f.o";
+    bool ret = false;
+    search_restable_t *test = NULL;
+
+    test = regex_findin(str, expr);
+
+    ret = (
+            assert_values_are_equal(test->n_finds, 2) &&
+            assert_values_are_equal(test->positions[0], 11) &&
+            assert_values_are_equal(test->positions[1], 19) &&
+            assert_values_are_equal(test->lengths[0], 3) &&
+            assert_values_are_equal(test->lengths[1], 3)
+          );
+
+    del_search_restable(test);
+
+    return ret;
+}
+
+// Test if wildcard match any character in regex_find in
+f_testcase test35(void)
+{
+    string_t str = "Let's find fao and foo here";
+    char expr[] = "f.o";
+    bool ret = false;
+    search_restable_t *test = NULL;
+
+    test = regex_findin(str, expr);
+
+    ret = (
+            assert_values_are_equal(test->n_finds, 2) &&
+            assert_values_are_equal(test->positions[0], 11) &&
+            assert_values_are_equal(test->positions[1], 19) &&
+            assert_values_are_equal(test->lengths[0], 3) &&
+            assert_values_are_equal(test->lengths[1], 3)
+          );
+
+    del_search_restable(test);
+
+    return ret;
+}
+
 // Test if regex_findin does not count when substring is not completely equal to expr
 f_testcase test34(void)
 {
@@ -16,7 +62,11 @@ f_testcase test34(void)
 
     test = regex_findin(str, expr);
 
-    ret = assert_values_are_equal(test->n_finds, 1);
+    ret = (
+            assert_values_are_equal(test->n_finds, 1) &&
+            assert_values_are_equal(test->positions[0], 24) &&
+            assert_values_are_equal(test->lengths[0], 3)
+          );
 
     del_search_restable(test);
 
@@ -425,6 +475,8 @@ int main(void)
     Assertion libstringTest32(&test32, "Test if regex_findin find the matching substring");
     Assertion libstringTest33(&test33, "Test if regex_findin find all the matching substrings in text");
     Assertion libstringTest34(&test34, "Test if regex_findin does not count when substring is not completely equal to expr");
+    Assertion libstringTest35(&test35, "Test if wildcard match any character in regex_find in");
+    Assertion libstringTest36(&test36, "Test if wildcard will only match any character in its position");
 
     vector<Assertion> tests = {
         libstringTest1, libstringTest2, libstringTest3, libstringTest4,
@@ -435,7 +487,7 @@ int main(void)
         libstringTest21, libstringTest22, libstringTest23, libstringTest24,
         libstringTest25, libstringTest26, libstringTest27, libstringTest28,
         libstringTest29, libstringTest30, libstringTest31, libstringTest32,
-        libstringTest33, libstringTest34
+        libstringTest33, libstringTest34, libstringTest35, libstringTest36
     };
 
     AssertionSet testbattery(tests);

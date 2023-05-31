@@ -1,5 +1,7 @@
 #include "string_c.h"
 
+// Regex =======================================================================
+
 enum atom_type_e
 {
     AT_NONE,
@@ -69,36 +71,30 @@ static size_t set_string_atom (
         const string_d regex,
         size_t at,
         enum atom_pos_e atom_pos,
-        regex_atoms_t *head
+        regex_atoms_t **head
 
         )
 {
-    regex_atoms_t *top = head;
-
-    while (regex[at] != '\0')
+    while (regex[at] != '\0' && regex[at] != '.')
     {
-        head->atom = regex[at];
-        head->atom_type = AT_STRING;
-        head->n_rpt = 1;
-        head->atom_pos = atom_pos;
+        (*head)->atom = regex[at];
+        (*head)->atom_type = AT_STRING;
+        (*head)->n_rpt = 1;
+        (*head)->atom_pos = atom_pos;
 
         ++at;
     
-        head->next_atom = new_regex_atoms_node(atom_pos);
+        (*head)->next_atom = new_regex_atoms_node(atom_pos);
 
-        if (head->next_atom == NULL)
+        if ((*head)->next_atom == NULL)
         {
-            delete_regex_atoms_list(top);
-
             return 0;
         }
         
-        head = head->next_atom;
+        *head = (*head)->next_atom;
     }
 
-    head = top;
-
-    return (at - 1);
+    return at;
 }
 
 static regex_atoms_t *classify(const string_d regex)
@@ -112,10 +108,34 @@ static regex_atoms_t *classify(const string_d regex)
 
     for (size_t at = 0; regex[at] != '\0'; ++at)
     {
-        at = set_string_atom(regex, at, atom_pos, head);
+        if (regex[at] != '.')
+        {
+            at = set_string_atom(regex, at, atom_pos, &head);
 
-        if (at == 0)
-            return NULL;
+            if (at == 0)
+            {
+                delete_regex_atoms_list(top);
+
+                return NULL;
+            }
+
+            --at; // Decrease to not jump the next caracter
+        }
+        else
+        {
+            head->atom = regex[at];
+            head->atom_type = AT_WILDCARD;
+            head->atom_pos = atom_pos;
+
+            if ((head->next_atom = malloc(sizeof (regex_atoms_t))) == NULL)
+            {
+                delete_regex_atoms_list(top);
+
+                return NULL;
+            }
+
+            head = head->next_atom;
+        }
     }
     
     return top;
@@ -124,27 +144,30 @@ static regex_atoms_t *classify(const string_d regex)
 search_restable_t *regex_findin(const string_d src, const string_d regex)
 {
     search_restable_t *results = NULL;
-    regex_atoms_t *atoms_top = classify(regex), *atoms_head = atoms_top;
+    regex_atoms_t *top = classify(regex), *head = top;
     size_t cnt_finds = 0;
     size_t *positions = NULL, *lengths = NULL;
 
-    if (!atoms_head)
+    if (!head)
         return NULL;
     
     for (size_t c = 0; src[c] != '\0'; ++c)
     {
-        if (src[c] == atoms_head->atom)
+        if (src[c] == head->atom || head->atom_type == AT_WILDCARD)
         {
             size_t position = c, length = 0;
 
-            while (src[c] == atoms_head->atom)
+            while (
+                    (src[c] == head->atom && head->atom_type == AT_STRING) ||
+                    head->atom_type == AT_WILDCARD
+                    )
             {
                 ++length;
                 ++c;
-                atoms_head = atoms_head->next_atom;
+                head = head->next_atom;
             }
 
-            if (atoms_head->atom_type == AT_NONE) // Means it corresponded
+            if (head->atom_type == AT_NONE) // Means it corresponded
             {
                 ++cnt_finds;
 
@@ -155,11 +178,11 @@ search_restable_t *regex_findin(const string_d src, const string_d regex)
                 lengths[cnt_finds - 1] = length;
             }
 
-            atoms_head = atoms_top;
+            head = top;
         }
     }
 
-    delete_regex_atoms_list(atoms_top);
+    delete_regex_atoms_list(top);
 
     results = malloc(sizeof (search_restable_t));
     
@@ -174,6 +197,7 @@ search_restable_t *regex_findin(const string_d src, const string_d regex)
 
     return results;
 } 
+// =============================================================================
 
 void del_search_restable(search_restable_t *del)
 {
